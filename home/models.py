@@ -52,23 +52,23 @@ class Order(models.Model):
     check_out_date = models.DateTimeField()
     ordered_rooms = models.ManyToManyField(Room)
     # user = models.ForeignKey("User", on_delete=models.CASCADE)
-    customer = models.ForeignKey('UserProfile', on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.date_of_order)
 
 
-class UserProfile(models.Model):
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4())
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    patronymic = models.CharField(max_length=20)
-    balance = models.IntegerField(default=0, validators=[is_greater_than_zero])
-
-    # @receiver(post_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         UserProfile.objects.create(user=instance)
-    #
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.userprofile.save()
+# class UserProfile(models.Model):
+#     # id = models.UUIDField(primary_key=True, default=uuid.uuid4())
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     patronymic = models.CharField(max_length=20)
+#     balance = models.IntegerField(default=0, validators=[is_greater_than_zero])
+#
+#     # @receiver(post_save, sender=User)
+#     # def create_user_profile(sender, instance, created, **kwargs):
+#     #     if created:
+#     #         UserProfile.objects.create(user=instance)
+#     #
+#     # @receiver(post_save, sender=User)
+#     # def save_user_profile(sender, instance, **kwargs):
+#     #     instance.userprofile.save()

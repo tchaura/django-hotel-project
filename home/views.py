@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
+from django.contrib.auth import authenticate, login
+from .models import Room
+from .forms import RegisterForm
 
-from .models import Room, UserProfile
 # Create your views here.
 
 
@@ -15,6 +17,7 @@ def index(request):
     }
 
     return render(request, template_name='home.html', context=context)
+
 
 class RoomsListView(generic.ListView):
     model = Room
@@ -30,9 +33,18 @@ class RoomsDetailView(generic.DetailView):
 
 
 def profile(request):
-    user = UserProfile.user
+    return render(request, 'profile.html')
 
-    context = {
-        "user": user,
-    }
-    return render(request, 'profile.html', context)
+
+def register(request):
+    form = RegisterForm(request.POST)
+    context = {'form': form}
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            login(request, user)
+            # messages.success(request, 'User Created succesfully')
+            return redirect('profile')
+
+    return render(request, 'registration/register.html', context)
