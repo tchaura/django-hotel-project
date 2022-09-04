@@ -1,0 +1,49 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h1 class="header">Поиск комнаты по критериям</h1>
+    <div class="col-md-6 card">
+        <div class="card-body">
+            <h5 class="card-title">Подберите комнату по своим параметрам</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+<div class="input-group mb-3">
+  <label class="input-group-text" for="inputGroupSelect01">Options</label>
+  <select class="form-select" id="inputGroupSelect01">
+    <option selected>Choose...</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+</div>
+            <a href="#" class="btn btn-primary">Найти</a>
+        </div>
+    </div>
+
+    <h1 class="header">Список комнат</h1>
+    <div class="row row-cols-auto">
+        {% for room in object_list %}
+            <div class="col-md" href="#">
+                <a href="{{ room.get_absolute_url }}"><h5 class="card-header">Номер комнаты: <strong>{{ room.number }}</strong>
+                    <span class="badge {% if room.comfortability == 'lux' %} bg-info {% elif room.comfortability == 'semi-lux' %} bg-secondary {% else %} bg-black {% endif %} rounded-pill">{{ room.get_comfortability_display }}</span>
+                </h5></a>
+                <div class="row row-cols-auto">
+                    <div class="col">
+                        Вместительность: {{ room.capacity }}
+                    </div>
+                    <div class="col">
+                        Этаж: {{ room.floor }}
+                    </div>
+                </div>
+                <div class="list-group list-group-horizontal list-group-flush">
+                    <div class="list-group-item">
+                        Цена: {{ room.price }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <li class="list-group-item">
+                Комнаты отсутствуют...
+            </li>
+        {% endfor %}
+    </div>
+{% endblock %}

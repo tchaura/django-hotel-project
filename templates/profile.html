@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h1 class="header">Личный кабинет</h1>
+{% if user.is_authenticated %}
+<p>fart</p>
+    <a class="btn btn-outline-danger" href="{% url 'logout' %}">Выйти</a>
+{% else %}
+    <div class="col-md-6 alert alert-primary">
+    <h5 class="alert-heading"><i class="bi bi-exclamation-circle"> </i>Упс!</h5>
+    <p>Похоже, что вы еще не авторизованы. Войдите или зарегистрируйтесь</p>
+    <a class="btn btn-primary" href="{% url 'login' %}">Войти</a>
+    <a class="btn btn-outline-primary" href="{% url 'register' %}">Зарегистрироваться</a>
+    </div>
+{% endif %}
+{% endblock %}

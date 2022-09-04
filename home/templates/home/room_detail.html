@@ -1,0 +1,21 @@
+{% extends 'base_generic.html' %}
+
+<body>
+{% block content %}
+    <h1 class="h1">Номер комнаты: <strong>{{ room.number }}</strong>
+                <span class="badge bg-primary rounded-pill">{{ room.get_comfortability_display }}</span>
+            </h1>
+            <div class="list-group">
+                    <div class="list-group-item">
+                        Вместительность: {{ room.capacity }}
+                    </div>
+                    <div class="list-group-item">
+                        Этаж: {{ room.floor }}
+                    </div>
+            <div class="list-group-item">
+                Цена: {{ room.price }}
+            </div>
+            </div>
+{% endblock %}
+</body>
+</html>
