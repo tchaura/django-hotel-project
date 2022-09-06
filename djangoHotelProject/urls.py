@@ -18,6 +18,8 @@ from django.urls import path
 from django.urls import include
 from django.views.generic import RedirectView
 from home.views import profile, register
+from home.views import user_login
+from django.contrib.auth.views import LoginView
 
 
 urlpatterns = [
@@ -25,7 +27,8 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('', RedirectView.as_view(url='home/')),
     path('accounts/profile/', profile, name='profile'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/login/', user_login, name='login'),
     path('accounts/register/', register, name='register'),
+    path('accounts/', include('django.contrib.auth.urls')),
 
 ]
