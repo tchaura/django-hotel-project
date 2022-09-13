@@ -12,23 +12,22 @@ from django.contrib.auth.models import User
 #     list_display = "login", "name", "surname", "balance"
 #
 
-class OrderInline(admin.TabularInline):
-    model = Order.ordered_rooms.through
-
+# class OrderInline(admin.TabularInline):
+#     model = Order.ordered_rooms.through
+#
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = "number", "floor", "price", "comfortability", "capacity", "status"
 
-    inlines = [OrderInline]
+    # inlines = [OrderInline]
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = "customer", "check_in_date", "check_out_date"
+    list_display = "customer", "check_in_date", "check_out_date", "ordered_rooms"
 
-    inlines = [OrderInline]
-    exclude = ('ordered_rooms',)
+    # inlines = [OrderInline]
 
 
 # class UserProfileInline(admin.StackedInline):

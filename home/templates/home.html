@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 {% extends 'base_generic.html' %}
-<html lang="ru">
 
 {% block content %}
     <h1 class="h1">Добро пожаловать!</h1>
+    <div class="col-md-6">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Sed tempus ante ante, a faucibus dui fringilla vitae.
         Duis feugiat justo ac ex tincidunt, ac sagittis libero sodales.
@@ -14,7 +13,7 @@
         Nam blandit felis quis nisl tristique laoreet.
         Morbi dignissim massa eget mauris convallis, at vehicula sapien fermentum.
     </p>
-    <h5>Всего гостиничных номеров: <strong>{{ total_rooms_number }}</strong>, <br>Из них свободно: <strong>{{ available_rooms_number }}</strong></h5>
+    <h5>Всего гостиничных номеров: <strong>{{ total_rooms_number }}</strong></h5>
     <a class="btn btn-primary" href="{% url 'rooms' %}">Заказать номер</a>
+    </div>
 {% endblock %}
-</html>

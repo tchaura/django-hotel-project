@@ -19,7 +19,10 @@ def is_greater_than_zero(value):
         )
 
 class Room(models.Model):
-    capacity = models.IntegerField()
+    CAPACITY_CHOICES = [
+        (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
+    ]
+    capacity = models.IntegerField(choices=CAPACITY_CHOICES, default=CAPACITY_CHOICES[0])
     COMFORTABILITY_CHOICES = [
         ("lux", "Люкс"),
         ("semi-lux", "Полу-люкс"),
@@ -48,14 +51,18 @@ class Order(models.Model):
     timezone.activate('Europe/Minsk')
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     date_of_order = models.DateTimeField(auto_now_add=True)
-    check_in_date = models.DateTimeField()
-    check_out_date = models.DateTimeField()
-    ordered_rooms = models.ManyToManyField(Room)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    ordered_rooms = models.ForeignKey(Room, on_delete=models.CASCADE)
     # user = models.ForeignKey("User", on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.date_of_order)
+
+
+class Basket(Order):
+    pass
 
 
 # class UserProfile(models.Model):
