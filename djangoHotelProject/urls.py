@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.views.generic import RedirectView
-from home.views import profile, register
+from home.views import profile, register, password_reset
 from home.views import user_login
 from django.contrib.auth.views import LoginView
 
@@ -30,5 +30,5 @@ urlpatterns = [
     path('accounts/login/', user_login, name='login'),
     path('accounts/register/', register, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
-
+    path('password_reset/', password_reset, name='password_reset')
 ]

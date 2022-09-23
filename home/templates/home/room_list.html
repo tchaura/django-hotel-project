@@ -8,14 +8,26 @@
 {% block content %}
     <h1 class="header">Поиск комнаты по критериям</h1>
     {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-    <style>.asteriskField { display: none; }
-    </style>
+
+        {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {%  if message.extra_tags == 'authorize' %}
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading"><i class="bi bi-exclamation-circle"> </i>{{ message }}</h5>
+
+                        <a class="btn btn-danger" href="{% url 'login' %}">Войти</a>
+                        <a class="btn btn-outline-danger" href="{% url 'register' %}">Зарегистрироваться</a>
+                    </div>
+                {% elif message.extra_tags == 'order_created' %}
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading"><i class="bi bi-check-circle"> </i>{{ message }}</h5>
+                        <div>Для получения подробной информации перейдите в <a class="alert-link" href="{% url 'profile' %}">личный кабинет</a>.</div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+    {% endif %}
     <div class="col card">
         <div class="card-body">
             <h5 class="card-title">Подберите комнату по своим параметрам</h5>
@@ -55,7 +67,7 @@
     </div>
 
     <div class="col mt-3">
-        {% if form.is_valid%}
+        {% if form.is_valid %}
             <h1 class="header">Найденные комнаты</h1>
         {% else %}
             <h1 class="header">Все комнаты</h1>
@@ -87,10 +99,10 @@
                                 <a class="btn btn-primary btn-dark" href="{{ room.get_absolute_url }}"><i class="bi bi-eye"></i> Посмотреть</a>
                                 {% if is_found %}
                                     <form method="post" class="d-grid mb-0">
-                                    {% csrf_token %}
-                                    {#                                        <div class="col">#}
-                                    <button type="submit" name="orderRoom" class="btn btn-primary" value="{{ room.number }}" ><i class="bi bi-bag"></i> Заказать</button>
-                                    {#                                        </div>#}
+                                        {% csrf_token %}
+                                        {#                                        <div class="col">#}
+                                        <button type="submit" name="orderRoom" class="btn btn-primary" value="{{ room.number }}" ><i class="bi bi-bag"></i> Заказать</button>
+                                        {#                                        </div>#}
                                     </form>
                                 {% endif %}
 

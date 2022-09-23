@@ -48,6 +48,7 @@ class Room(models.Model):
 
 
 class Order(models.Model):
+
     timezone.activate('Europe/Minsk')
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     date_of_order = models.DateTimeField(auto_now_add=True)
@@ -61,8 +62,10 @@ class Order(models.Model):
         return str(self.date_of_order)
 
 
-class Basket(Order):
-    pass
+class Basket(models.Model):
+
+    date_from = models.DateField(null=True)
+    date_to = models.DateField(null=True)
 
 
 # class UserProfile(models.Model):
