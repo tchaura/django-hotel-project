@@ -1,0 +1,1 @@
+web: gunicorn djangoHotelProject.wsgi --log-file -
