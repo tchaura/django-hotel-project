@@ -34,7 +34,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['young-gorge-53243.herokuapp.com']
 
 
 # Application definition
