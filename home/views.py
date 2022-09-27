@@ -254,5 +254,6 @@ def password_reset(request):
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="registration/password_reset_form.html", context={"password_reset_form":password_reset_form})
 
+
 def about(request):
     return render(request, 'about.html')

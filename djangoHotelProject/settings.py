@@ -34,7 +34,8 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['comfyhostel.herokuapp.com']
+ALLOWED_HOSTS = ['comfyhostel.herokuapp.com',
+                 '127.0.0.1']
 
 
 # Application definition
