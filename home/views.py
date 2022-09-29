@@ -120,7 +120,7 @@ def rooms(request):
     if request.method == 'POST' and request.POST.get('orderRoom'):
         ordered_room_number = request.POST.get('orderRoom')
 
-        basket = Basket.objects.first()
+        basket = Basket.objects.last()
         date_from = basket.date_from
         date_to = basket.date_to
         user = get_user(request)
@@ -132,7 +132,7 @@ def rooms(request):
                           )
             order.save()
             print('order saved')
-            Basket.delete(Basket.objects.first())
+            Basket.delete(Basket.objects.last())
             messages.success(request, "Ваш заказ успешно создан", extra_tags='order_created')
 
         else:

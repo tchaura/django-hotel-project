@@ -63,7 +63,6 @@ class Order(models.Model):
 
 
 class Basket(models.Model):
-
     date_from = models.DateField(null=True)
     date_to = models.DateField(null=True)
 
