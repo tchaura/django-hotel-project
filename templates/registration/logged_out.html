@@ -1,6 +1,10 @@
 {% extends "base_generic.html" %}
 
+{% block title %}
+    <title>Выход</title>
+{% endblock %}
+
 {% block content %}
   <h1 class="header">Выход выполнен</h1>
-  <a class="btn btn-primary" href="{% url 'index'%}">Верунуться на главную</a>
+  <a class="btn btn-primary" href="{% url 'home'%}">Верунуться на главную</a>
 {% endblock %}

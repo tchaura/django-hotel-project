@@ -21,36 +21,71 @@ from django.utils.encoding import force_bytes
 # Create your views here.
 
 
-def index(request):
-    total_rooms_number = len(Room.objects.all())
-    available_rooms_number = len(Room.objects.filter(status__exact="available"))
+def home(request):
 
-    context = {
-        "total_rooms_number": total_rooms_number,
-        "available_rooms_number": available_rooms_number,
-    }
+    if request.POST.get('findRoom'):
 
-    return render(request, template_name='home.html', context=context)
+        form = RoomsFilterForm(request.POST)
+
+        if form.is_valid():
+
+            room_filter_context = filter_rooms(form)
+
+            if room_filter_context is not None:
+                room_filter_context['form'] = form
+
+                return render(request, template_name='home/room_list.html', context=room_filter_context)
+
+        return render(request, template_name='home.html', context={'form': form})
+
+    return render(request, template_name='home.html', context={'form': RoomsFilterForm()})
 
 
-def filter_form(request):
-    form = RoomsFilterForm(request.POST)
+def filter_rooms(form):
+    context = {}
 
+    basket = Basket(
+        date_from=form.cleaned_data['date_from'],
+        date_to=form.cleaned_data['date_to']
+    )
+    basket.save()
 
-    return form
+    filtered_rooms_query_set = Room.objects.filter(
+        capacity__exact=form.cleaned_data['capacity'],
+    )
 
+    room_orders = Order.objects.filter(ordered_rooms__in=filtered_rooms_query_set)
+    if room_orders:
+        closest_check_out_date = room_orders.filter(check_out_date__lte=form.cleaned_data['date_to']).last()
 
-# class RoomsListView(generic.ListView):
-#     model = Room
-#     context_object_name = 'rooms_list'
-#
-#     def get_queryset(self):
-#         return Room.objects.order_by('number')
-#
+        closest_check_in_date = room_orders.filter(check_in_date__gte=form.cleaned_data['date_from']).last()
+
+        if closest_check_out_date and closest_check_in_date:
+            print("Check-in date" + str(closest_check_in_date.check_in_date))
+            print("Check-out date" + str(closest_check_out_date.check_out_date))
+            if closest_check_out_date.check_out_date < closest_check_in_date.check_in_date:
+                context['room_list'] = filtered_rooms_query_set
+                context['is_found'] = True
+            else:
+                context['room_list'] = Room.objects.none()
+        elif closest_check_out_date:
+            print("Check-out date" + str(closest_check_out_date.check_out_date))
+            if len(Order.objects.all()) == 1:
+                context['room_list'] = Room.objects.none()
+            else:
+                context['room_list'] = filtered_rooms_query_set
+                context['is_found'] = True
+        else:
+            context['room_list'] = Room.objects.none()
+    else:
+        context['room_list'] = Room.objects.none()
+
+    return context
+
 
 def rooms(request):
 
-    form = RoomsFilterForm(request.POST)
+    form = RoomsFilterForm()
     room_query_set = Room.objects.all()
     is_found = False
 
@@ -62,64 +97,19 @@ def rooms(request):
     }
 
     if request.method == 'POST' and request.POST.get('findRoom') == 'find':
+        form = RoomsFilterForm(request.POST)
+        context['form'] = form
 
         if form.is_valid():
+            room_filter_context = filter_rooms(form)
 
-            basket = Basket(
-                date_from=form.cleaned_data['date_from'],
-                date_to=form.cleaned_data['date_to']
-            )
-            basket.save()
+            if room_filter_context is not None:
+                context.update(room_filter_context)
 
-            filtered_rooms_query_set = Room.objects.filter(
-                capacity__exact=form.cleaned_data['capacity'],
-                price__range=[form.cleaned_data['price_from'], form.cleaned_data['price_to']],
-            )
-            if form.cleaned_data['floor']:
-                filtered_rooms_query_set = filtered_rooms_query_set.filter(
-                    floor__exact=form.cleaned_data['floor']
-                )
-            if form.cleaned_data['comfortability'] != 'any':
-                filtered_rooms_query_set = filtered_rooms_query_set.filter(
-                    comfortability__exact=form.cleaned_data['comfortability']
-                )
 
-            room_orders = Order.objects.filter(ordered_rooms__in=filtered_rooms_query_set)
-            if room_orders:
-                closest_check_out_date = room_orders.filter(check_out_date__lte=form.cleaned_data['date_to']).last()
-
-                closest_check_in_date = room_orders.filter(check_in_date__gte=form.cleaned_data['date_from']).last()
-
-                if closest_check_out_date and closest_check_in_date:
-                    print("Check-in date" + str(closest_check_in_date.check_in_date))
-                    print("Check-out date" + str(closest_check_out_date.check_out_date))
-                    if closest_check_out_date.check_out_date < closest_check_in_date.check_in_date:
-                        context['room_list'] = filtered_rooms_query_set
-                        context['is_found'] = True
-                    else:
-                        context['room_list'] = Room.objects.none()
-                elif closest_check_out_date:
-                    print("Check-out date" + str(closest_check_out_date.check_out_date))
-                    if len(Order.objects.all()) == 1:
-                        context['room_list'] = Room.objects.none()
-                    else:
-                        context['room_list'] = filtered_rooms_query_set
-                        context['is_found'] = True
-                else:
-                    context['room_list'] = Room.objects.none()
-            else:
-                context['room_list'] = Room.objects.none()
-
-            # if context['room_list']:
-            #     context['is_found'] = True
-
-            return render(request, template_name='home/room_list.html', context=context)
-        else:
-            print('form error')
 
     if request.method == 'POST' and request.POST.get('orderRoom'):
         ordered_room_number = request.POST.get('orderRoom')
-
         basket = Basket.objects.last()
         date_from = basket.date_from
         date_to = basket.date_to
@@ -137,7 +127,6 @@ def rooms(request):
 
         else:
             messages.warning(request, "Для заказа комнаты вам необходимо авторизоваться", extra_tags='authorize')
-
 
     return render(request, template_name='home/room_list.html', context=context)
 
@@ -195,28 +184,29 @@ def profile(request):
 
 
 def user_login(request):
-    form = UserLoginForm(request.POST)
+    form = UserLoginForm()
     context = {'form': form}
 
     if request.method == 'POST':
+        form = UserLoginForm(request.POST)
         if form.is_valid():
             print('success')
             user = authenticate(username=form['username'].value(), password=form['password'].value())
             login(request, user)
             return redirect('profile')
-    else:
-        for field in form:
-            print("Field Error:", field.name, "Error", field.errors)
-        print(form.non_field_errors())
 
     return render(request, 'registration/login.html', context)
 
 
 def register(request):
 
-    form = RegisterForm(request.POST)
+    form = RegisterForm()
     context = {'form': form}
+
     if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        context['form'] = form
+
         if form.is_valid():
             form.save()
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
@@ -225,6 +215,7 @@ def register(request):
             return redirect('profile')
 
     return render(request, 'registration/register.html', context)
+
 
 def password_reset(request):
     if request.method == "POST":

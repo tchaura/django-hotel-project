@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.views.generic import RedirectView
-from home.views import profile, register, password_reset, about
+from home.views import profile, register, password_reset, about, rooms, RoomsDetailView
 from home.views import user_login
 from django.contrib.auth.views import LoginView
 
@@ -25,6 +25,8 @@ from django.contrib.auth.views import LoginView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', include('home.urls')),
+    path('rooms/', rooms, name="rooms"),
+    path('rooms/<int:pk>', RoomsDetailView.as_view(), name='room-detail'),
     path('', RedirectView.as_view(url='home/')),
     path('accounts/profile/', profile, name='profile'),
     path('accounts/login/', user_login, name='login'),

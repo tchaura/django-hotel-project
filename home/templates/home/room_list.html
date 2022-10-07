@@ -4,9 +4,12 @@
 {% load crispy_forms_tags %}
 {% load crispy_forms_utils %}
 
+{% block title %}
+    <title>Комнаты</title>
+{% endblock %}
 
 {% block content %}
-    <h1 class="header">Поиск комнаты по критериям</h1>
+    <h1 class="header text-center">Поиск комнаты по критериям</h1>
     {% if messages %}
 
         {% for message in messages %}
@@ -28,49 +31,27 @@
         {% endfor %}
 
     {% endif %}
-    <div class="col card">
+    <div class="card text-center" style="max-width: 50rem; margin: 0 auto;">
         <div class="card-body">
             <h5 class="card-title">Подберите комнату по своим параметрам</h5>
             <p class="card-text">Выберите дату заселения и выселения и, если необходимо, укажите дополнительные данные</p>
             <form method="post">
                 {% csrf_token %}
-                <div class="row row-cols-md-2">
-                    <div class="col-md-auto">{{ form.comfortability|as_crispy_field }}</div>
+                <div class="row row-cols-md-2 justify-content-center">
                     <div class="col-md-auto">{{ form.capacity|as_crispy_field }}</div>
-                    <div class="col-md-auto">{{ form.price_from|as_crispy_field }}</div>
-                    <div class="col-md-auto">{{ form.price_to|as_crispy_field }}</div>
                     <div class="col-md-auto">{{ form.date_from|as_crispy_field }}</div>
                     <div class="col-md-auto">{{ form.date_to|as_crispy_field}}</div>
                 </div>
-                <div class="row row-cols-auto">
-                    <div class="accordion accordion-flush col-md-auto" id="accordionFlushAdditional">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" style="--bs-btn-padding-x: 0rem;" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    Дополнительно
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushAdditional">
-                                <div class="accordion-body">
-                                    <div class="col-md-auto">{{ form.floor|as_crispy_field }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" name="findRoom" class="btn btn-primary" value="find">Найти</button>
+                <button type="submit" name="findRoom" class="btn btn-primary px-5" value="find">Найти</button>
             </form>
-            {#            {% crispy form %}#}
-            {#            <a class="btn btn-primary" type="submit" href="#">Найти</a>#}
-            {#            <button type="submit" class="btn btn-primary">Найти</button>#}
         </div>
     </div>
 
     <div class="col mt-3">
         {% if form.is_valid %}
-            <h1 class="header">Найденные комнаты</h1>
+            <h1 class="header text-center">Найденные комнаты</h1>
         {% else %}
-            <h1 class="header">Все комнаты</h1>
+            <h1 class="header text-center">Все комнаты</h1>
         {% endif %}
         <div class="row row-cols-auto justify-content-center g-4">
             {% for room in room_list %}

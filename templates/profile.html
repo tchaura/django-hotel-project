@@ -4,7 +4,7 @@
     {% load crispy_forms_field %}
     {% load crispy_forms_tags %}
     {% load crispy_forms_utils %}
-    <h1 class="header">Личный кабинет</h1>
+    <h1 class="header text-center">Личный кабинет</h1>
     {% if user.is_authenticated %}
         {% for message in messages %}
             {% if message.extra_tags == 'password_error' %}
@@ -21,7 +21,7 @@
             {% endif %}
         {% endfor %}
 
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="accordionExample" style="margin: 0 auto; max-width: 45rem;">
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
@@ -120,10 +120,7 @@
             </div>
         </div>
 
-
-        <div class="col mt-2"><a class="btn btn-outline-danger" href="{% url 'logout' %}">Выйти</a></div>
-
-
+        <div class="text-center mt-3" style="margin: 0 auto;"><a class="btn btn-outline-danger px-4" style="margin: 0 auto;" href="{% url 'logout' %}">Выйти</a></div>
 
     {% else %}
         <div class="col-md-6 alert alert-primary">

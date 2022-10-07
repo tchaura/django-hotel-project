@@ -1,10 +1,24 @@
 {% extends 'base_generic.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
-    <h1>Вход</h1>
-    <style> .asteriskField{ display: none; }</style>
+    <div class="text-center" style="margin-top: 10%">
+        <h1>Войти</h1>
+        <div class="col align-self-center">
+            <form method="post" style="margin: 0;">
+                {% csrf_token %}
+            <div class="" style="max-width: 20rem; margin: 0 auto;">{{ form.username | as_crispy_field }}</div>
+            <div class="" style="max-width: 20rem; margin: 0 auto;">{{ form.password | as_crispy_field}}</div>
+            <button type="submit" class="btn btn-primary mb-3 px-5">Войти</button>
+            </form>
+        </div>
+        <div class="row-cols-1" style="margin: 0 auto;">
+            <div class="col"> <a class="link-dark" href="{%  url 'register' %}">Регистрация</a></div>
+            <div class="col">•</div>
+            <div class="col"><a class="link-dark" href="{% url 'password_reset' %}">Забыли пароль?</a></div>
+        </div>
 
-   <div class="col-md-4">{% crispy form %}</div>
-    <a class="text-secondary" href="{% url 'password_reset' %}">Забыли пароль?</a>
+
+    </div>
 {% endblock %}

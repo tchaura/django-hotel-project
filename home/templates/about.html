@@ -1,29 +1,38 @@
 {%  extends 'base_generic.html' %}
 {% block content %}
-    <h1>О нас</h1>
-    <div class="col-md-8"><strong>ComfyHostel</strong> - Проект сайта гостиницы с реализацией такого функционала, как:
-    <ul class="mt-2">
-        <li>Регистрация и вход пользователя</li>
-        <li>Личный кабинет</li>
-        <li>Просмотр комнат гостиницы</li>
-        <li>Фильтр комнат по критериям</li>
-        <li>Система заказа комнаты</li>
-        <li>Просмотр информации о заказе, удаление заказа</li>
-    </ul>
-    </div>
-    <div class="col-md-6">
-    При создании сайта были использованы:
-    <ul class="mt-2">
-        <li>Python</li>
-        <li>Django framework</li>
-        <li>SQLite</li>
-        <li>Bootstrap, Bootstrap Icons</li>
-        <li>Crispy Forms</li>
-        <li>Github</li>
-    </ul>
-    </div>
+        <h1 class="text-center">О нас</h1>
+        <div class="card mb-3" style="margin: 0 auto; max-width: 45rem;">
+            <div class="card-header">
+                <strong>ComfyHostel</strong> - Проект сайта гостиницы с реализацией такого функционала, как:
+            </div>
+            <div class="card-body">
+                <ul class="" style="margin: 0 auto;">
+                    <li>Регистрация и вход пользователя</li>
+                    <li>Личный кабинет</li>
+                    <li>Просмотр комнат гостиницы</li>
+                    <li>Фильтр комнат по критериям</li>
+                    <li>Система заказа комнаты</li>
+                    <li>Просмотр информации о заказе, удаление заказа</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mb-3" style="margin: 0 auto; max-width: 45rem;">
+            <div class="card-header">
+                <b>При создании сайта были использованы:</b>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                <li>Python</li>
+                <li>Django framework</li>
+                <li>SQLite</li>
+                <li>Bootstrap, Bootstrap Icons</li>
+                <li>Crispy Forms</li>
+                <li>Github</li>
+            </ul>
+            </div>
+        </div>
 
-    <div class="col-md-6">
-        <div class="text-secondary">Made with <i class="bi-heart-fill"></i> by @<a href="https://github.com/tchaura" class="link-secondary">tchaura</a></div>
-    </div>
+        <div class="text-center mb-3">
+            <div class="text-secondary">Made with <i class="bi-heart-fill"></i> by @<a href="https://github.com/tchaura" class="link-secondary">tchaura</a></div>
+        </div>
 {% endblock %}

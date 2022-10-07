@@ -1,12 +1,120 @@
 {% extends 'base_generic.html' %}
-
+{% load static %}
+{% block title %}
+    <title>Главная</title>
+{% endblock %}
+{% load crispy_forms_filters %}
 {% block content %}
-    <h1 class="h1">Добро пожаловать!</h1>
-    <div class="col-md-6">
-    <p>Сайт гостиницы на данный момент работает в тестовом режиме. Эта страницы и другие будут впоследствии
-        дорабатываться и обрастать функционалом.
-    </p>
-    <h5>Всего гостиничных номеров: <strong>{{ total_rooms_number }}</strong></h5>
-    <a class="btn btn-primary" href="{% url 'rooms' %}">Заказать номер</a>
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class="active" aria-current="true"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item">
+                <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="{% static 'img/home-carousel-3.jpg' %}">
+
+                <div class="container">
+                    <div class="carousel-caption text-center">
+                        <h1 class="">Рады гостям!</h1>
+                        <p>Добро пожаловать на сайт гостиницы ComfyHostel! <br>У нас вы найдете комнаты на любой вкус</p>
+                        <p><a class="btn btn-lg btn-primary" href="{% url 'rooms' %}">Посмотреть комнаты</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="{% static 'img/home-carousel-2.jpg' %}">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>Чувствуйте себя как дома</h1>
+                        <p>Войдите в личный кабинет для доступа к вашим заказом и личной информации</p>
+                        <p><a class="btn btn-lg btn-primary" href="{% url 'profile' %}">В личный кабинет</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item active">
+                <img class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" src="{% static 'img/home-carousel-1.jpg' %}">
+
+                <div class="container">
+                    <div class="carousel-caption text-center">
+                        <h1>Хотите узнать больше?</h1>
+                        <p>Прочитайте больше о нашей гостинице на странице "О нас"</p>
+                        <p><a class="btn btn-lg btn-primary" href="{% url 'about' %}">Узнать</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+
+
+
+
+    <div class="container px-4  text-center align-content-center mb-5" id="featured-3">
+        <h2 class="pb-2 border-bottom">Почему мы?</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded">
+                    <i class="bi bi-cart m-2"></i>
+                </div>
+                <h2>Онлайн-заказ</h2>
+                <p>На нашем сайте вы можете быстро заказать необходимую вам комнату без необходимости <br>куда-либо звонить</p>
+            </div>
+
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded">
+                    <i class="bi bi-person-hearts m-2"></i>
+                </div>
+                <h2>Довольные клиенты</h2>
+                <p>Высокое качество сервиса и отзывчивый персонал всегда вызывают восторженные отзывы наших гостей</p>
+            </div>
+
+            <div class="feature col">
+                <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded">
+                    <i class="bi bi-stars m-2"></i>
+                </div>
+                <h2>Уровень комфорта</h2>
+                <p>Каждая комната в нашей гостинице оборудована всеми необходимыми удобствами</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="fixed-bottom mx-2 col align-self-end justify-content-end text-center" id="accordionExample">
+            <h2 class="" id="headingOne">
+                <button class="btn btn-primary btn-lg px-5 text-center mb-2 shadow-lg text-nowrap" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="bi bi-search"></i> Найти комнату
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse align-self-center" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body d-inline-flex">
+                    <div id="room-search">
+                        <div class="card shadow-lg">
+                            <div class="card-body mx-lg-5">
+                                <h5 class="card-title">Подберите комнату по своим параметрам</h5>
+                                <form method="post" class="mb-0">
+                                    {% csrf_token %}
+                                    <div class="row row-cols-md-2 justify-content-center">
+                                        <div class="col-md-auto">{{ form.capacity|as_crispy_field }}</div>
+                                        <div class="col-md-auto">{{ form.date_from|as_crispy_field }}</div>
+                                        <div class="col-md-auto">{{ form.date_to|as_crispy_field}}</div>
+                                    </div>
+                                    <div class="gap-2"> <button type="submit" name="findRoom" class="btn btn-primary btn-lg text-nowrap" style="min-width: 50%" value="find">Найти</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}
