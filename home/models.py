@@ -11,12 +11,14 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
+
 def is_greater_than_zero(value):
     if value < 0:
         raise ValidationError(
             _('%(value)s is smaller than zero'),
             params={'value': value},
         )
+
 
 class Room(models.Model):
     CAPACITY_CHOICES = [
@@ -32,13 +34,6 @@ class Room(models.Model):
     number = models.IntegerField(primary_key=True, unique=True)
     floor = models.IntegerField()
     price = models.IntegerField()
-
-    STATUSES_LIST = [
-        ("available", "Свободна"),
-        ("taken", "Занята"),
-    ]
-
-    status = models.CharField(max_length=20, choices=STATUSES_LIST, default=STATUSES_LIST[0])
 
     def __str__(self):
         return f"Room number {self.number}"
@@ -65,19 +60,3 @@ class Order(models.Model):
 class Basket(models.Model):
     date_from = models.DateField(null=True)
     date_to = models.DateField(null=True)
-
-
-# class UserProfile(models.Model):
-#     # id = models.UUIDField(primary_key=True, default=uuid.uuid4())
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     patronymic = models.CharField(max_length=20)
-#     balance = models.IntegerField(default=0, validators=[is_greater_than_zero])
-#
-#     # @receiver(post_save, sender=User)
-#     # def create_user_profile(sender, instance, created, **kwargs):
-#     #     if created:
-#     #         UserProfile.objects.create(user=instance)
-#     #
-#     # @receiver(post_save, sender=User)
-#     # def save_user_profile(sender, instance, **kwargs):
-#     #     instance.userprofile.save()

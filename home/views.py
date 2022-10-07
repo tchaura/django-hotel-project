@@ -6,7 +6,6 @@ from .models import Room, Order, Basket, User
 from .forms import RegisterForm, NameEditForm
 from home.forms import UserLoginForm, RoomsFilterForm
 from django.contrib.auth.forms import PasswordChangeForm
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
@@ -37,6 +36,9 @@ def home(request):
                 return render(request, template_name='home/room_list.html', context=room_filter_context)
 
         return render(request, template_name='home.html', context={'form': form})
+
+    if request.method == 'POST' and request.POST.get('orderRoom'):
+        rooms(request)
 
     return render(request, template_name='home.html', context={'form': RoomsFilterForm()})
 
@@ -78,7 +80,8 @@ def filter_rooms(form):
         else:
             context['room_list'] = Room.objects.none()
     else:
-        context['room_list'] = Room.objects.none()
+        context['room_list'] = filtered_rooms_query_set
+        context['is_found'] = True
 
     return context
 
@@ -105,8 +108,6 @@ def rooms(request):
 
             if room_filter_context is not None:
                 context.update(room_filter_context)
-
-
 
     if request.method == 'POST' and request.POST.get('orderRoom'):
         ordered_room_number = request.POST.get('orderRoom')
@@ -139,8 +140,7 @@ class RoomsDetailView(generic.DetailView):
 def profile(request):
     if request.user.is_authenticated:
         user = get_user(request)
-        name_edit_form = NameEditForm(request.POST, instance=request.user)
-        password_change_form = PasswordChangeForm(request.user, request.POST)
+        password_change_form = PasswordChangeForm(request.user)
         user_orders = Order.objects.filter(customer=user.id)
         context = {
             'current_user': user,
@@ -150,10 +150,12 @@ def profile(request):
         context = {}
 
     if request.method == 'POST' and request.POST.get('editName') == 'edit':
+        name_edit_form = NameEditForm()
         context['name_edit_form'] = name_edit_form
         return render(request, 'profile.html', context)
 
     if request.method == 'POST' and request.POST.get('saveName') == 'submit':
+        name_edit_form = NameEditForm(request.POST, instance=request.user)
         if name_edit_form.is_valid():
             name_edit_form.save()
         return render(request, 'profile.html', context)
@@ -162,6 +164,7 @@ def profile(request):
         context['password_change_form'] = password_change_form
 
     if request.POST.get('savePassword'):
+        password_change_form = PasswordChangeForm(request.user, request.POST)
         if password_change_form.is_valid():
             user = password_change_form.save()
             update_session_auth_hash(request, user)
@@ -241,7 +244,7 @@ def password_reset(request):
                         send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
-                    return redirect ("/password_reset/done/")
+                    return redirect("/password_reset/done/")
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="registration/password_reset_form.html", context={"password_reset_form":password_reset_form})
 

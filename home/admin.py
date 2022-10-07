@@ -1,3 +1,5 @@
+import random
+
 from django.contrib import admin
 from .models import Room, Order
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -18,7 +20,7 @@ from django.contrib.auth.models import User
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = "number", "floor", "price", "comfortability", "capacity", "status"
+    list_display = "number", "floor", "price", "comfortability", "capacity"
 
     # inlines = [OrderInline]
 
@@ -43,4 +45,15 @@ class OrderAdmin(admin.ModelAdmin):
 # admin.site.unregister(User)
 # admin.site.register(User, UserAdmin)
 
-
+#
+# for i in range(10):
+#     room = Room(
+#         capacity=random.randint(1, 5),
+#         comfortability=Room.COMFORTABILITY_CHOICES[random.randint(0, 2)][0],
+#         number=random.randint(2, 320),
+#         floor=random.randint(1, 10),
+#         price=random.randint(30, 70)
+#
+#     )
+#     room.save()
+#

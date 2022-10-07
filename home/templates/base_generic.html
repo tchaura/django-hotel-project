@@ -29,7 +29,7 @@
                     <img src="{% static 'comfyhostel_logo.svg' %}" width="130" alt="ComfyHostel" class="me-3">
                 </a>
 
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" style="margin: 0 auto;">
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ms-lg-4">
                     <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark{%  if request.path == '/home/' %} fw-bold{% endif %}">Главная</a></li>
                     <li><a href="{% url 'rooms' %}" class="nav-link px-2 link-dark{%  if request.path == '/rooms/' %} fw-bold {% endif %}">Комнаты</a></li>
                     <li><a href="{% url 'about' %}" class="nav-link px-2 link-dark{%  if request.path == '/about/' %} fw-bold {% endif %}">О нас</a></li>
